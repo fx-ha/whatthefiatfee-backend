@@ -35,6 +35,10 @@ const main = async (): Promise<void> => {
   // express
   const app = express()
 
+  app.get('/', (_, res) => {
+    res.send('Hello World!')
+  })
+
   // apollo
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
