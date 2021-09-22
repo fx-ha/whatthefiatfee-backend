@@ -14,7 +14,7 @@ const main = async (): Promise<void> => {
   // db
   await createConnection({
     type: 'postgres',
-    url: process.env.DB_URL,
+    url: process.env.DATABASE_URL,
     logging: process.env.DB_LOGGING === 'true' ? true : false,
     synchronize: process.env.DB_SYNC === 'true' ? true : false,
     entities: [Fee, Rate, HistoricalFee],
