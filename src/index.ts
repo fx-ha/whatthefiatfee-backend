@@ -6,8 +6,9 @@ import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
+import { schedule } from 'node-cron'
 import { Fee, HistoricalFee, Rate } from './entities'
-// import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
+import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
 import { FeeResolver, HistoricalFeeResolver, RateResolver } from './resolvers'
 
 const main = async (): Promise<void> => {
@@ -24,10 +25,12 @@ const main = async (): Promise<void> => {
     },
   })
 
-  // // cron
-  // schedule('0 0 */1 * * *') saveNewRates()
-  // schedule('0 0 */1 * * *') saveNewFees()
-  // schedule('0 1 0 */1 * *') saveHistoricalFees()
+  // cron
+  schedule('0 1 0 */1 * *', () => saveHistoricalFees())
+  schedule('0 0 */1 * * *', () => {
+    saveNewRates()
+    saveNewFees()
+  })
 
   // express
   const app = express()
