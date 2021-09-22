@@ -1,9 +1,8 @@
-import { schedule } from 'node-cron'
 import { getConnection } from 'typeorm'
 import { Rate } from '../entities'
 import { getRates } from '../utils'
 
-const saveNewRates = schedule('0 0 */1 * * *', async () => {
+const saveNewRates = async (): Promise<void> => {
   const oldRate = await Rate.findOne()
 
   const [usdRate, eurRate, gbpRate] = await Promise.all([
@@ -24,6 +23,6 @@ const saveNewRates = schedule('0 0 */1 * * *', async () => {
     .into(Rate)
     .values({ eur, gbp, usd })
     .execute()
-})
+}
 
 export default saveNewRates

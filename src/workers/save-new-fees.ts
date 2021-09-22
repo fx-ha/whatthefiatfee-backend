@@ -1,9 +1,8 @@
-import { schedule } from 'node-cron'
 import { getConnection } from 'typeorm'
 import { Fee } from '../entities'
 import { getFeeTable } from '../utils'
 
-const saveNewFees = schedule('0 0 */1 * * *', async () => {
+const saveNewFees = async (): Promise<void> => {
   const feeTable = await getFeeTable()
 
   if (feeTable.length === 55) {
@@ -16,6 +15,6 @@ const saveNewFees = schedule('0 0 */1 * * *', async () => {
       .values(feeTable)
       .execute()
   }
-})
+}
 
 export default saveNewFees

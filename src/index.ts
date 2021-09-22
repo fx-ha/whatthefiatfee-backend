@@ -25,9 +25,9 @@ const main = async (): Promise<void> => {
   })
 
   // // cron
-  // saveNewRates.start()
-  // saveNewFees.start()
-  // saveHistoricalFees.start()
+  // schedule('0 0 */1 * * *') saveNewRates()
+  // schedule('0 0 */1 * * *') saveNewFees()
+  // schedule('0 1 0 */1 * *') saveHistoricalFees()
 
   // express
   const app = express()
