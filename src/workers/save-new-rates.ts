@@ -25,4 +25,6 @@ const saveNewRates = async (): Promise<void> => {
     .execute()
 }
 
+saveNewRates()
+
 export default saveNewRates

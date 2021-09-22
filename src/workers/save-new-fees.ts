@@ -17,4 +17,6 @@ const saveNewFees = async (): Promise<void> => {
   }
 }
 
+saveNewFees()
+
 export default saveNewFees

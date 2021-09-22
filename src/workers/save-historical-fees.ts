@@ -22,4 +22,6 @@ const saveHistoricalFees = async (): Promise<void> => {
     .execute()
 }
 
+saveHistoricalFees()
+
 export default saveHistoricalFees
