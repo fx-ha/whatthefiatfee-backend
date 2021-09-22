@@ -7,7 +7,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
 import { Fee, HistoricalFee, Rate } from './entities'
-import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
+// import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
 import { FeeResolver, HistoricalFeeResolver, RateResolver } from './resolvers'
 
 const main = async (): Promise<void> => {
@@ -21,10 +21,10 @@ const main = async (): Promise<void> => {
     migrations: [path.join(__dirname, './migrations/*')],
   })
 
-  // cron
-  saveNewRates.start()
-  saveNewFees.start()
-  saveHistoricalFees.start()
+  // // cron
+  // saveNewRates.start()
+  // saveNewFees.start()
+  // saveHistoricalFees.start()
 
   // express
   const app = express()
