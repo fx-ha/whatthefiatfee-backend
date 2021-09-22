@@ -26,8 +26,8 @@ const main = async (): Promise<void> => {
   })
 
   // cron
-  schedule('0 1 0 */1 * *', () => saveHistoricalFees())
-  schedule('0 0 */1 * * *', () => {
+  schedule('2 0 * * *', () => saveHistoricalFees())
+  schedule('0 * * * *', () => {
     saveNewRates()
     saveNewFees()
   })
