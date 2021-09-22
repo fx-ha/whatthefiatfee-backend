@@ -20,7 +20,7 @@ const main = async (): Promise<void> => {
     entities: [Fee, Rate, HistoricalFee],
     migrations: [path.join(__dirname, './migrations/*')],
     extra: {
-      ssl: true,
+      ssl: { rejectUnauthorized: false },
     },
   })
 
