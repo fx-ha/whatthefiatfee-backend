@@ -3,12 +3,7 @@ import { FeeTable } from '../types'
 
 const getFeeTable = async (): Promise<FeeTable[]> => {
   const browser = await puppeteer.launch({
-    ignoreHTTPSErrors: true,
-    headless: true,
-    handleSIGINT: false,
-    handleSIGTERM: false,
-    handleSIGHUP: false,
-    args: ['--no-sandbox', '--disabled-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   })
 
   const page = await browser.newPage()
