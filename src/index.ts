@@ -19,6 +19,9 @@ const main = async (): Promise<void> => {
     synchronize: process.env.DB_SYNC === 'true' ? true : false,
     entities: [Fee, Rate, HistoricalFee],
     migrations: [path.join(__dirname, './migrations/*')],
+    extra: {
+      ssl: true,
+    },
   })
 
   // // cron
