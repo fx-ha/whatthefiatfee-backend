@@ -9,7 +9,7 @@ import {
 
 @ObjectType()
 @Entity()
-class HistoricalFee extends BaseEntity {
+class FeeHistory extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number
@@ -43,4 +43,4 @@ class HistoricalFee extends BaseEntity {
   createdAt: Date
 }
 
-export default HistoricalFee
+export default FeeHistory
