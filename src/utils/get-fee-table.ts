@@ -10,17 +10,19 @@ const getFeeTable = async (): Promise<FeeTable[]> => {
     ],
   })
 
-  console.log(browser)
-
   const page = await browser.newPage()
-
-  console.log(page)
 
   await page.setUserAgent(
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4298.0 Safari/537.36'
   )
 
   await page.goto('https://whatthefee.io')
+
+  console.log(
+    await page.$$eval('.App-footer > a:nth-child(1)', (options) =>
+      options.map((option) => option.textContent)
+    )
+  )
 
   const scrapeResult = await page.evaluate(() => {
     const result = []
