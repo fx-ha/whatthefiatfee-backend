@@ -5,7 +5,7 @@ import { getFeeTable } from '../utils'
 const saveNewFees = async (): Promise<void> => {
   const feeTable = await getFeeTable()
 
-  if (feeTable.length === 55) {
+  if (feeTable?.length === 55) {
     await getConnection().createQueryBuilder().delete().from(Fee).execute()
 
     await getConnection()
