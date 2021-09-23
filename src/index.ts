@@ -10,9 +10,9 @@ import {
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
 import { schedule } from 'node-cron'
-import { Fee, HistoricalFee, Rate } from './entities'
-import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
-import { FeeResolver, HistoricalFeeResolver, RateResolver } from './resolvers'
+import { Fee, FeeHistory, Rate } from './entities'
+import { saveFeeHistory, saveNewFees, saveNewRates } from './workers'
+import { FeeResolver, FeeHistoryResolver, RateResolver } from './resolvers'
 
 const main = async (): Promise<void> => {
   // db
@@ -21,7 +21,7 @@ const main = async (): Promise<void> => {
     url: process.env.DATABASE_URL,
     logging: process.env.DB_LOGGING === 'true' ? true : false,
     synchronize: process.env.DB_SYNC === 'true' ? true : false,
-    entities: [Fee, Rate, HistoricalFee],
+    entities: [Fee, Rate, FeeHistory],
     migrations: [path.join(__dirname, './migrations/*')],
     extra: {
       ssl: { rejectUnauthorized: false },
@@ -29,7 +29,7 @@ const main = async (): Promise<void> => {
   })
 
   // cron
-  schedule('2 0 * * *', () => saveHistoricalFees())
+  schedule('2 0 * * *', () => saveFeeHistory())
   schedule('0 * * * *', () => {
     saveNewRates()
     saveNewFees()
@@ -45,7 +45,7 @@ const main = async (): Promise<void> => {
   // apollo
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [FeeResolver, HistoricalFeeResolver, RateResolver],
+      resolvers: [FeeResolver, FeeHistoryResolver, RateResolver],
     }),
     plugins: [
       process.env.NODE_ENV === 'production'

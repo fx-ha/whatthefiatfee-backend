@@ -1,7 +1,7 @@
 import { getConnection } from 'typeorm'
-import { Fee, HistoricalFee, Rate } from '../entities'
+import { Fee, FeeHistory, Rate } from '../entities'
 
-const saveHistoricalFees = async (): Promise<void> => {
+const saveFeeHistory = async (): Promise<void> => {
   const { eur, gbp, usd } = await Rate.findOneOrFail()
 
   const { amount: maxFee } = await Fee.findOneOrFail({
@@ -17,9 +17,9 @@ const saveHistoricalFees = async (): Promise<void> => {
   await getConnection()
     .createQueryBuilder()
     .insert()
-    .into(HistoricalFee)
+    .into(FeeHistory)
     .values({ eur, gbp, usd, maxFee, midFee, minFee })
     .execute()
 }
 
-export default saveHistoricalFees
+export default saveFeeHistory
