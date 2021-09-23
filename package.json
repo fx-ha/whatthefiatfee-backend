@@ -26,7 +26,6 @@
     "graphql": "^15.5.3",
     "node-cron": "^3.0.0",
     "pg": "^8.7.1",
-    "puppeteer": "^10.2.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.37"

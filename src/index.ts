@@ -3,7 +3,10 @@ import 'dotenv-safe/config'
 import express from 'express'
 import path from 'path'
 import { ApolloServer } from 'apollo-server-express'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from 'apollo-server-core'
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
 import { schedule } from 'node-cron'
@@ -44,7 +47,11 @@ const main = async (): Promise<void> => {
     schema: await buildSchema({
       resolvers: [FeeResolver, HistoricalFeeResolver, RateResolver],
     }),
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [
+      process.env.NODE_ENV === 'production'
+        ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
+        : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+    ],
   })
 
   await apolloServer.start()
