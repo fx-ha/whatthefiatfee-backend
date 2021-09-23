@@ -52,7 +52,6 @@ const main = async (): Promise<void> => {
         ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
         : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
     ],
-    // plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   })
 
   await apolloServer.start()
