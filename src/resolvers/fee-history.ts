@@ -4,7 +4,7 @@ import { FeeHistory } from '../entities'
 Resolver()
 class FeeHistoryResolver {
   @Query(() => [FeeHistory])
-  async getHistoricalFees(): Promise<FeeHistory[]> {
+  async getFeeHistory(): Promise<FeeHistory[]> {
     return FeeHistory.find()
   }
 }
