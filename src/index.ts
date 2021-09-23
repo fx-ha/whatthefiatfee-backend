@@ -10,8 +10,10 @@ import { schedule } from 'node-cron'
 import { Fee, HistoricalFee, Rate } from './entities'
 import { saveHistoricalFees, saveNewFees, saveNewRates } from './workers'
 import { FeeResolver, HistoricalFeeResolver, RateResolver } from './resolvers'
+import { getFeeTable } from './utils'
 
 const main = async (): Promise<void> => {
+  console.log(await getFeeTable())
   // db
   await createConnection({
     type: 'postgres',

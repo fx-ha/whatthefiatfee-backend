@@ -3,10 +3,18 @@ import { FeeTable } from '../types'
 
 const getFeeTable = async (): Promise<FeeTable[]> => {
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+    ],
   })
 
+  console.log(browser)
+
   const page = await browser.newPage()
+
+  console.log(page)
 
   await page.setUserAgent(
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4298.0 Safari/537.36'
@@ -30,9 +38,12 @@ const getFeeTable = async (): Promise<FeeTable[]> => {
     return JSON.stringify(result)
   })
 
+  console.log(scrapeResult)
+
   await browser.close()
 
   const fees: [] = JSON.parse(scrapeResult)
+  console.log(fees)
   const probabilities = [0.05, 0.2, 0.5, 0.8, 0.95]
   const hour = 1000 * 60 * 60 * 1
   const multipliers = [0.5, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 24]
