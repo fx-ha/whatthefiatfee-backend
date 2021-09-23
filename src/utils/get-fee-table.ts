@@ -1,51 +1,17 @@
-import puppeteer from 'puppeteer'
+import axios from 'axios'
 import { FeeTable } from '../types'
 
-const getFeeTable = async (): Promise<FeeTable[]> => {
-  const browser = await puppeteer.launch({
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-    ],
-  })
+const getFeeTable = async (): Promise<FeeTable[] | undefined> => {
+  const query = Number((Number(new Date()) / 1000 / 300).toFixed()) * 300
+  const url = `https://whatthefee.io/data.json?c=${query}`
+  const headers = { 'User-agent': 'WhatTheFiatFee v0.2' }
+  const { status, data } = await axios.get(url, { headers })
 
-  const page = await browser.newPage()
+  if (status !== 200) {
+    return undefined
+  }
 
-  await page.setUserAgent(
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4298.0 Safari/537.36'
-  )
-
-  await page.goto('https://whatthefee.io')
-
-  console.log(
-    await page.$$eval('.App-footer > a:nth-child(1)', (options) =>
-      options.map((option) => option.textContent)
-    )
-  )
-
-  const scrapeResult = await page.evaluate(() => {
-    const result = []
-
-    for (let tableRow = 1; tableRow < 12; tableRow++) {
-      for (let tableData = 2; tableData < 7; tableData++) {
-        const sel = `#root > div > div:nth-child(3) > table > tbody > tr:nth-child(${tableRow}) > td:nth-child(${tableData})`
-
-        const fee = document.body.querySelector(sel)?.textContent
-
-        result.push(fee)
-      }
-    }
-
-    return JSON.stringify(result)
-  })
-
-  console.log(scrapeResult)
-
-  await browser.close()
-
-  const fees: [] = JSON.parse(scrapeResult)
-  console.log(fees)
+  const fees: [] = data.data.flat()
   const probabilities = [0.05, 0.2, 0.5, 0.8, 0.95]
   const hour = 1000 * 60 * 60 * 1
   const multipliers = [0.5, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 24]
@@ -64,7 +30,7 @@ const getFeeTable = async (): Promise<FeeTable[]> => {
     time = hour * multipliers[row]
     column += 1
 
-    return { id: i, amount: Number(fee), probability, time }
+    return { id: i, amount: Math.exp(Number(fee) / 100), probability, time }
   })
 }
 
