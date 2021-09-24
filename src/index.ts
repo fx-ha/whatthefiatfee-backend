@@ -47,6 +47,7 @@ const main = async (): Promise<void> => {
     schema: await buildSchema({
       resolvers: [FeeResolver, FeeHistoryResolver, RateResolver],
     }),
+    introspection: true,
     plugins: [
       process.env.NODE_ENV === 'production'
         ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
