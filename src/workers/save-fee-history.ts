@@ -1,5 +1,6 @@
 import { getConnection } from 'typeorm'
 import { Fee, FeeHistory, Rate } from '../entities'
+import { triggerIsr } from '../utils'
 
 const saveFeeHistory = async (): Promise<void> => {
   const { eur, gbp, usd } = await Rate.findOneOrFail()
@@ -20,6 +21,8 @@ const saveFeeHistory = async (): Promise<void> => {
     .into(FeeHistory)
     .values({ eur, gbp, usd, maxFee, midFee, minFee })
     .execute()
+
+  await triggerIsr('https://whatthefiatfee.vercel.app/history/')
 }
 
 export default saveFeeHistory
